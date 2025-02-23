@@ -1,0 +1,32 @@
+name: login-base
+services:
+  mysql:
+    image: mysql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_DATABASE=login_base
+      - MYSQL_ROOT_PASSWORD=123
+    networks:
+      - login_network
+
+  login-api:
+    container_name: login_api
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/login_base?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: drop-and-create
+    networks:
+      - login_network
+
+networks:
+  login_network:
+    driver: bridge
