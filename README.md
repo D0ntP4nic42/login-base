@@ -25,4 +25,4 @@ Caso queira subir apenas o banco utilize o mesmo compose porém adicione o nome 
 docker-compose up --build -d mysql
 ```
 
-É importante checar o application propertues em caso de erro de conexão com o banco. Provavelmente alterações na url disponível lá devem ser feitas dependendo da sua configuração de mysql.
+É importante checar o application.properties em caso de erro de conexão com o banco. Provavelmente alterações na url disponível lá devem ser feitas dependendo da sua configuração de mysql.
