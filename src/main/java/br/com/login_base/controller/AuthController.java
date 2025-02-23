@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,12 +33,13 @@ public class AuthController {
 	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 	
 	@PostMapping("/login")
-	public ResponseEntity login(LoginDTO loginDTO) {
+	public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
 		var user = userService.findByUsername(loginDTO.cpf());
 
 	    if (PASSWORD_ENCODER.matches(loginDTO.senha(), user.getSenha())) {
 	        return ResponseEntity.ok(Collections.singletonMap("token", gerarAccessToken(user)));
 	    }
+	    
 
 	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 	            .body(Collections.singletonMap("mensagem", "Credenciais inválidas"));
@@ -45,7 +47,7 @@ public class AuthController {
     }
 	
 	@PostMapping("/register")
-	public ResponseEntity register(RegisterDTO registerDTO) {
+	public ResponseEntity register(@RequestBody RegisterDTO registerDTO) {
 		var user = new User(registerDTO.cpf(), registerDTO.email(), registerDTO.nome(), PASSWORD_ENCODER.encode(registerDTO.senha()));
 		userService.save(user);
 		
