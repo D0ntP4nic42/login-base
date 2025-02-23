@@ -57,7 +57,7 @@ public class AuthController {
 		var expiresIn = 300L;
 		
 		var claims = JwtClaimsSet.builder()
-				.issuer("iris-api")
+				.issuer("login_base-api")
 				.subject(user.getCpf().toString())
 				.issuedAt(now)
 				.expiresAt(now.plusSeconds(expiresIn))
